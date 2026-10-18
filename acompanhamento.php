@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require 'db.php';
 
+$resetToken = getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? '');
+
 // Definindo as colunas do bingo
 $colunas = [
     'B' => range(1, 15),
@@ -52,10 +54,15 @@ $colunas = [
 </head>
 <body>
     <div class="container">
-       		 <div class="botoes">
-			  <h2>Cartela de Números Sorteados</h2>
+        <div class="botoes">
+            <h2>Cartela de Números Sorteados</h2>
             <a href="sorteio.php" class="btn">Sortear Novo Número</a>
-          <!----  <a href="reset.php" class="btn reset">Resetar Jogo</a>--->
+            <form method="POST" action="reset.php" style="display:inline; margin-top:10px;">
+                <?php if ($resetToken !== ''): ?>
+                    <input type="hidden" name="token" value="<?= htmlspecialchars($resetToken, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn reset">Resetar Jogo</button>
+            </form>
         </div>
         <div class="bingo-card" id="bingo-card">
             <?php foreach ($colunas as $letra => $numeros): ?>

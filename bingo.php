@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require 'db.php';
 
+$resetToken = getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? '');
+
 // Função para determinar a letra do número sorteado
 function obterLetraBingo(int $numero): string {
     if ($numero >= 1 && $numero <= 15) return 'B';
@@ -132,7 +134,12 @@ $colunas = [
         </div>
 
         <div class="botoes" style="margin-top: 20px;">
-            <a href="reset.php" class="btn">Resetar Jogo</a>
+            <form method="POST" action="reset.php" style="display:inline;">
+                <?php if ($resetToken !== ''): ?>
+                    <input type="hidden" name="token" value="<?= htmlspecialchars($resetToken, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn">Resetar Jogo</button>
+            </form>
         </div>
     </div>
 

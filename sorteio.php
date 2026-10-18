@@ -80,7 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sorteio'])) {
         <?php endif; ?>
 
         <a href="bingo.php" class="btn" style="margin-top: 20px;">Ver Acompanhamento</a>
-        <a href="reset.php" class="btn" style="background-color: #e63946; margin-top: 10px;">Resetar Jogo</a>
+        <form method="POST" action="reset.php" style="display:inline; margin-top: 10px;">
+            <?php if (getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? '') !== ''): ?>
+                <input type="hidden" name="token" value="<?= htmlspecialchars(getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+            <?php endif; ?>
+            <button type="submit" class="btn" style="background-color: #e63946; margin-top: 10px;">Resetar Jogo</button>
+        </form>
     </div>
 </body>
 </html>

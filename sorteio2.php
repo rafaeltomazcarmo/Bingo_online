@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require 'db.php';
 
+$resetToken = getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? '');
+
 // Total de números do bingo
 const TOTAL_NUMEROS = 75;
 
@@ -41,7 +43,12 @@ if ($totalSorteados >= TOTAL_NUMEROS) {
         <div class="botoes">
             <a href="sorteio.php" class="btn">Sortear Novo Número</a>
             <a href="acompanhamento.php" class="btn">Ver Números Sorteados</a>
-            <a href="reset.php" class="btn reset">Resetar Jogo</a>
+            <form method="POST" action="reset.php" style="display:inline;">
+                <?php if ($resetToken !== ''): ?>
+                    <input type="hidden" name="token" value="<?= htmlspecialchars($resetToken, ENT_QUOTES, 'UTF-8'); ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn reset">Resetar Jogo</button>
+            </form>
         </div>
     </div>
 </body>

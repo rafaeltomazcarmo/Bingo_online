@@ -70,7 +70,12 @@ $colunas = [
 
         <div class="botoes">
             <a href="sorteio.php" class="btn">Sortear Novo Número</a>
-            <a href="reset.php" class="btn reset">Resetar Jogo</a>
+            <form method="POST" action="reset.php" style="display:inline;">
+                <?php if (getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? '') !== ''): ?>
+                    <input type="hidden" name="token" value="<?= htmlspecialchars(getenv('RESET_TOKEN') ?: ($_ENV['RESET_TOKEN'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                <?php endif; ?>
+                <button type="submit" class="btn reset">Resetar Jogo</button>
+            </form>
         </div>
     </div>
 </body>
